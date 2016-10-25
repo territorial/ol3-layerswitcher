@@ -1,0 +1,9 @@
+ul.layer-manager {
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+ul.layer.manager li {
+	margin:0;
+	padding:0;
+}
