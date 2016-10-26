@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "305001",
+      "label": "SIM Aluskaart",
+      "tooltip": "",
+      "level": 0,
+      "parent": null,
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "http://kaart.test.smit/service",
+          "code": "URL",
+          "type": "TEXT"
+        },
+        {
+          "value": "WMS",
+          "code": "SERVICE",
+          "type": "TEXT"
+        },
+        {
+          "value": "sim_aluskaart",
+          "code": "NAME",
+          "type": "TEXT"
+        },
+        {
+          "value": "image/png",
+          "code": "FORMAT",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "305003",
+      "label": "SIM Ortofoto",
+      "tooltip": "",
+      "level": 0,
+      "parent": null,
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "http://kaart.test.smit/service",
+          "code": "URL",
+          "type": "TEXT"
+        },
+        {
+          "value": "WMS",
+          "code": "SERVICE",
+          "type": "TEXT"
+        },
+        {
+          "value": "sim_ortofoto",
+          "code": "NAME",
+          "type": "TEXT"
+        },
+        {
+          "value": "image/jpeg",
+          "code": "FORMAT",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "305002",
+      "label": "SIM Hybriidkaart",
+      "tooltip": "",
+      "level": 0,
+      "parent": null,
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "http://kaart.test.smit/service",
+          "code": "URL",
+          "type": "TEXT"
+        },
+        {
+          "value": "WMS",
+          "code": "SERVICE",
+          "type": "TEXT"
+        },
+        {
+          "value": "sim_hybriidkaart",
+          "code": "NAME",
+          "type": "TEXT"
+        },
+        {
+          "value": "image/jpeg",
+          "code": "FORMAT",
+          "type": "TEXT"
+        }
+      ]
+    }
+  ],
+  "total": 3
+}
