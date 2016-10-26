@@ -1,9 +1,12 @@
-ul.layer-manager {
-	list-style-type: none;
-	margin:0;
-	padding:0;
+.layer-manager {
+    top: .5em;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
-ul.layer.manager li {
-	margin:0;
-	padding:0;
+
+.layer.manager li {
+    margin: 0;
+    padding: 0;
 }
+
