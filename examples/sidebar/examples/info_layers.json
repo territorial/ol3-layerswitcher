@@ -1,0 +1,95 @@
+{
+  "items": [
+    {
+      "id": "304001",
+      "label": "Tsoonid",
+      "tooltip": "",
+      "level": 0,
+      "parent": null,
+      "hasChildren": true,
+      "attributes": [
+        {
+          "value": "n/a",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "304003",
+      "label": "Tsoon I",
+      "tooltip": "",
+      "level": 1,
+      "parent": "304001",
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "ne:ne",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "304004",
+      "label": "Tsoon II",
+      "tooltip": "",
+      "level": 1,
+      "parent": "304001",
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "ne:ne_10m_admin_0_boundary_lines_land",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "304005",
+      "label": "Tsoon III",
+      "tooltip": "",
+      "level": 1,
+      "parent": "304001",
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "ne:ne_10m_roads",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "304002",
+      "label": "Piir",
+      "tooltip": "",
+      "level": 0,
+      "parent": null,
+      "hasChildren": true,
+      "attributes": [
+        {
+          "value": "n/a",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "id": "304007",
+      "label": "Piirilõigud",
+      "tooltip": "",
+      "level": 1,
+      "parent": "304002",
+      "hasChildren": false,
+      "attributes": [
+        {
+          "value": "ne:ne_10m_populated_places",
+          "code": "NAME",
+          "type": "TEXT"
+        }
+      ]
+    }
+  ],
+  "total": 6
+}

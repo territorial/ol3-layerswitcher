@@ -36,9 +36,8 @@ ol.control.LayerManager.prototype.setMap = function(map) {
 
 	if (map) {
 		// listener for layers, that will added
-		this.mapListeners.push(map.getLayers().on('add', function() {
-			this.renderPanel();
-		}, this));
+		this.mapListeners.push(map.getLayers().on('add', this.renderPanel, this));
+		this.mapListeners.push(map.getLayers().on('remove', this.renderPanel, this));
 
 		// already added layers
 		if (map.getLayers().getLength() > 0) {
@@ -91,11 +90,58 @@ ol.control.LayerManager.prototype.renderBaseLayersSelectBox_ = function(lyr, elm
  * @param {Element} elm DOM element that children will be appended to.
  */
 ol.control.LayerManager.prototype.renderLayers_ = function(lyr, elm) {
-	var lyrs = lyr.getLayers().getArray().slice().reverse();
+	var this_ = this,
+		lyrs = lyr.getLayers().getArray().slice().reverse();
 	for (var i = 0, l; i < lyrs.length; i++) {
 		l = lyrs[i];
-		if (l.get('title')) {
+		if (l.get('type') === 'combinedWMS') {
 			//elm.appendChild(this.renderLayer_(l, i));
+			var source = l.get('combinedSource');
+			
+			ol.control.LayerManager.forEachRecursiveArray(source, function (item, parent) {
+				
+				var label = document.createElement('label');
+				label.innerHTML = item.title;
+				
+				var li = document.createElement('li');
+				
+				if (item.layers) {
+					// group
+					
+					li.className = 'layer-group';
+					li.id = 'group-' + item.id;
+					
+					li.appendChild(label);
+					li.appendChild(document.createElement('ul'));
+					
+				} else {
+					
+					var input = document.createElement('input');
+					input.type = 'checkbox';
+					input.id = 'layer-' + item.name;
+					var cl = l;
+					input.onchange = function(e) {
+						this_.setCombinedLayerVisible_(cl);
+					};
+					
+					
+					
+					label.appendChild(input);
+					label.insertBefore(input, label.childNodes[0]);
+					li.appendChild(label);
+					
+				}
+				
+				if (parent && parent.id) {
+					var parent_el = document.getElementById('group-' + parent.id);
+					var ul = parent_el.getElementsByTagName("ul")[0];
+					ul.appendChild(li);
+				} else {
+					elm.appendChild(li);
+				}
+				
+			});
+			
 		}
 	}
 };
@@ -198,6 +244,22 @@ ol.control.LayerManager.prototype.setVisible_ = function(lyr, visible) {
 	}
 };
 
+ol.control.LayerManager.prototype.setCombinedLayerVisible_ = function(lyr) {
+	var layernames = lyr.get('combinedLayers').filter(function(item) {
+		return document.getElementById('layer-' + item).checked;
+	});
+	
+	var params = lyr.getSource().updateParams({
+		'LAYERS': layernames.join(',')
+	});
+	
+	if (layernames.length > 0) {
+		lyr.setVisible(true);
+	} else {
+		lyr.setVisible(false);
+	}
+};
+
 /**
  * Generate a UUID
  * @returns {String} UUID
@@ -223,6 +285,15 @@ ol.control.LayerManager.prototype.forEachRecursive = function(lyr, fn) {
 		fn(lyr, idx, a);
 		if (lyr.getLayers) {
 			ol.control.LayerManager.forEachRecursive(lyr, fn);
+		}
+	});
+};
+
+ol.control.LayerManager.forEachRecursiveArray = function(lyr, fn, parent) {
+	lyr.forEach(function(lyr) {
+		fn(lyr, parent);
+		if (lyr.layers) {
+			ol.control.LayerManager.forEachRecursiveArray(lyr.layers, fn, lyr);
 		}
 	});
 };
