@@ -40,6 +40,13 @@ See [the examples](./examples) for usage.
 |:---|:---|:----------|
 |`opt_options`|`Object`| Control options, extends olx.control.ControlOptions adding: **`tipLabel`** `String` - the button tooltip. |
 
+#### Additional Options
+
+|Name|Type|Description|
+|:---|:---|:----------|
+|`tipLabel`|`String`| the button tooltip. |
+|`enableOpacitySliders`|`Boolean`| Enables layer opacity slider. Default `false` |
+
 #### Extends
 
 `ol.control.Control`
@@ -94,4 +101,3 @@ MIT (c) Matt Walker.
 
 If you find the layer switcher useful you might also like the
 [ol3-popup](https://github.com/walkermatt/ol3-popup).
-
