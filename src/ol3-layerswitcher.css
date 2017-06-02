@@ -66,11 +66,19 @@
 
 .layer-switcher li.layer {
     display: table;
+    width: 100%;
 }
 
 .layer-switcher li.layer label, .layer-switcher li.layer input {
-    display: table-cell;
+    display: block;
+    float: left;
     vertical-align: sub;
+}
+
+.layer-switcher li.layer input.opacity {
+    width: 60px;
+    display: block;
+    float: right;
 }
 
 .layer-switcher label.disabled {

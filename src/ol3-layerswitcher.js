@@ -42,6 +42,9 @@
         element.appendChild(this.panel);
         ol.control.LayerSwitcher.enableTouchScroll_(this.panel);
 
+        // opacity slider (true|false)
+        this.enableOpacitySliders = options.enableOpacitySliders || false;
+
         var this_ = this;
 
         button.onmouseover = function(e) {
@@ -191,7 +194,8 @@
         } else {
 
             li.className = 'layer';
-            var input = document.createElement('input');
+            var input = document.createElement('input'),
+                input_o = document.createElement('input');
             if (lyr.get('type') === 'base') {
                 input.type = 'radio';
                 input.name = 'base';
@@ -214,6 +218,19 @@
             }
 
             li.appendChild(label);
+
+            if (this.enableOpacitySliders) {
+                input_o.type = 'range';
+                input_o.className = 'opacity';
+                input_o.min = 0;
+                input_o.max = 1;
+                input_o.step = 0.01;
+                input_o.value = lyr.getOpacity();
+                input_o.onchange = function(e) {
+                    lyr.setOpacity(e.target.value);
+                };
+                li.appendChild(input_o);
+            }
 
         }
 
