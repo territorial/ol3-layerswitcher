@@ -82,7 +82,7 @@
 }
 
 .layer-switcher li.layer button.up {
-    display: block;
+    display: block !important;
     float: right;
     right: 50px;
     width: 20px;
@@ -91,6 +91,7 @@
     background-color: white !important;
     color: black !important;
 }
+
 .layer-switcher li.layer button.down {
     display: block;
     float: right;

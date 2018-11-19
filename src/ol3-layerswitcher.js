@@ -166,6 +166,14 @@
         }
     };
 
+    ol.control.LayerSwitcher.move_to = function(layers, layer, idx_step){
+        const index = layers.getArray().indexOf(layer);
+        if(index >= 0) {
+            layers.removeAt(index);
+            layers.insertAt(index + idx_step, layer);
+        }
+    }
+
     /**
      * Increase Layer Z-index
      * @private
@@ -173,16 +181,14 @@
      */
     ol.control.LayerSwitcher.prototype.moveUp_ = function(lyr) {
         var map = this.getMap();
-        const groups = map.getLayers();
-        groups.forEach(function(group, idx, a){
-            if(group.get('type') != 'base'){
-                const layers = group.getLayers();
-                const index = layers.getArray().indexOf(lyr);
-                if(index >= 0) {
-                    layers.removeAt(index);
-                    layers.insertAt(index + 1, lyr);
-                }
 
+        const layers = map.getLayers();
+        // move layers on root
+        ol.control.LayerSwitcher.move_to(layers, lyr, +1);
+        // move grouped layers
+        layers.forEach(function(group, idx, a){
+            if(group instanceof ol.layer.Group){
+                ol.control.LayerSwitcher.move_to(group.getLayers(), lyr, +1);
             }
         });
         this.hidePanel();
@@ -196,19 +202,35 @@
      */
     ol.control.LayerSwitcher.prototype.moveDown_ = function(lyr) {
         var map = this.getMap();
-        const groups = map.getLayers();
-        groups.forEach(function(group, idx, a){
-            if(group.get('type') != 'base'){
-                const layers = group.getLayers();
-                const index = layers.getArray().indexOf(lyr);
-                if(index >= 0) {
-                    layers.removeAt(index);
-                    layers.insertAt(index - 1, lyr);
-                }
+        const layers = map.getLayers();
+        // move layers on root
+        ol.control.LayerSwitcher.move_to(layers, lyr, -1);
+        // move grouped layers
+        layers.forEach(function(group, idx, a){
+            if(group instanceof ol.layer.Group){
+                ol.control.LayerSwitcher.move_to(group.getLayers(), lyr, -1);
             }
         });
         this.hidePanel();
         this.showPanel();
+    }
+
+
+    ol.control.LayerSwitcher.add_layer_move_buttons = function(obj_instance, layer,  item){
+        const upButton = document.createElement('button');
+        upButton.className = 'up';
+        upButton.onclick = function(e) { obj_instance.moveUp_(layer) }
+        const upButtonText = document.createTextNode('\u25B2');
+        upButton.appendChild(upButtonText);
+        item.appendChild(upButton);
+
+        const downButton = document.createElement('button');
+        downButton.className = 'down';
+        downButton.onclick = function(e) { obj_instance.moveDown_(layer) }
+        const downButtonText = document.createTextNode('\u25BC');
+        downButton.appendChild(downButtonText);
+        item.appendChild(downButton);
+
     }
 
     /**
@@ -235,7 +257,6 @@
             li.appendChild(label);
             var ul = document.createElement('ul');
             li.appendChild(ul);
-
             this.renderLayers_(lyr, ul);
 
         } else {
@@ -249,19 +270,7 @@
             } else {
                 input.type = 'checkbox';
                 if(this.enableLayerOrder){
-                    const upButton = document.createElement('button');
-                    upButton.className = 'up';
-                    upButton.onclick = function(e) { this_.moveUp_(lyr) }
-                    const upButtonText = document.createTextNode('\u25B2');
-                    upButton.appendChild(upButtonText);
-                    li.appendChild(upButton);
-
-                    const downButton = document.createElement('button');
-                    downButton.className = 'down';
-                    downButton.onclick = function(e) { this_.moveDown_(lyr) }
-                    const downButtonText = document.createTextNode('\u25BC');
-                    downButton.appendChild(downButtonText);
-                    li.appendChild(downButton);
+                    ol.control.LayerSwitcher.add_layer_move_buttons(this_, lyr, li);
                 }
             }
             input.id = lyrId;
