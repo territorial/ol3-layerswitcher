@@ -46,6 +46,7 @@ See [the examples](./examples) for usage.
 |:---|:---|:----------|
 |`tipLabel`|`String`| the button tooltip. |
 |`enableOpacitySliders`|`Boolean`| Enables layer opacity slider. Default `false` |
+|`enableLayerOrder`|`Boolean`| Enables Z-index up/down buttons. Default `false` |
 
 #### Extends
 

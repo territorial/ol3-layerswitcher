@@ -44,6 +44,8 @@
 
         // opacity slider (true|false)
         this.enableOpacitySliders = options.enableOpacitySliders || false;
+        // layer order - move up & down
+        this.enableLayerOrder = options.enableLayerOrder || false;
 
         var this_ = this;
 
@@ -165,6 +167,51 @@
     };
 
     /**
+     * Increase Layer Z-index
+     * @private
+     * @param {ol.layer.Base} The layer whos visibility will be moved up.
+     */
+    ol.control.LayerSwitcher.prototype.moveUp_ = function(lyr) {
+        var map = this.getMap();
+        const groups = map.getLayers();
+        groups.forEach(function(group, idx, a){
+            if(group.get('type') != 'base'){
+                const layers = group.getLayers();
+                const index = layers.getArray().indexOf(lyr);
+                if(index >= 0) {
+                    layers.removeAt(index);
+                    layers.insertAt(index + 1, lyr);
+                }
+
+            }
+        });
+        this.hidePanel();
+        this.showPanel();
+    }
+
+    /**
+     * Decrease Layer Z-index
+     * @private
+     * @param {ol.layer.Base} The layer whos visibility will be moved down.
+     */
+    ol.control.LayerSwitcher.prototype.moveDown_ = function(lyr) {
+        var map = this.getMap();
+        const groups = map.getLayers();
+        groups.forEach(function(group, idx, a){
+            if(group.get('type') != 'base'){
+                const layers = group.getLayers();
+                const index = layers.getArray().indexOf(lyr);
+                if(index >= 0) {
+                    layers.removeAt(index);
+                    layers.insertAt(index - 1, lyr);
+                }
+            }
+        });
+        this.hidePanel();
+        this.showPanel();
+    }
+
+    /**
      * Render all layers that are children of a group.
      * @private
      * @param {ol.layer.Base} lyr Layer to be rendered (should have a title property).
@@ -201,6 +248,21 @@
                 input.name = 'base';
             } else {
                 input.type = 'checkbox';
+                if(this.enableLayerOrder){
+                    const upButton = document.createElement('button');
+                    upButton.className = 'up';
+                    upButton.onclick = function(e) { this_.moveUp_(lyr) }
+                    const upButtonText = document.createTextNode('\u25B2');
+                    upButton.appendChild(upButtonText);
+                    li.appendChild(upButton);
+
+                    const downButton = document.createElement('button');
+                    downButton.className = 'down';
+                    downButton.onclick = function(e) { this_.moveDown_(lyr) }
+                    const downButtonText = document.createTextNode('\u25BC');
+                    downButton.appendChild(downButtonText);
+                    li.appendChild(downButton);
+                }
             }
             input.id = lyrId;
             input.checked = lyr.get('visible');
@@ -313,6 +375,7 @@
             return false;
         }
     };
+
     var LayerSwitcher = ol.control.LayerSwitcher;
     return LayerSwitcher;
 }));
